@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
+    /*
      public Transform target;
      public float distance = 20.0f;
      public float zoomSpd = 2.0f;
@@ -51,5 +52,34 @@ public class Camera : MonoBehaviour
          if (angle > 360.0f)
              angle -= 360.0f;
          return Mathf.Clamp (angle, min, max);
-     }
+     }*/
+
+    public float moveSpeed = 5f;
+    public float rotationSpeed = 2f;
+
+    private void Update()
+    {
+        // Movimento da câmera com as teclas WASD
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(horizontal, 0f, vertical) * moveSpeed * Time.deltaTime;
+        transform.Translate(movement);
+
+        // Posição Y nunca negativa, isso é, nunca irá passar do chão
+        transform.position = new Vector3(transform.position.x, Mathf.Max(transform.position.y, 0f), transform.position.z);
+
+        if (Input.GetMouseButton(0))
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+
+            // Rotação apenas nos eixos X e Y
+            transform.Rotate(Vector3.up, mouseX * rotationSpeed);
+            transform.Rotate(Vector3.left, mouseY * rotationSpeed);
+
+            // Mantém o eixo Z constante
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+        }
+    }
 }

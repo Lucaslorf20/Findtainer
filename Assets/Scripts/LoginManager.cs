@@ -15,6 +15,10 @@ public class LoginManager : MonoBehaviour
     private TMP_InputField senhaField = null;
     [SerializeField]
     private TMP_Text feedback = null;
+    [SerializeField]
+    private TMP_Text textoBotao = null;
+    [SerializeField]
+    private GameObject loading = null;
 
     private int InputSelected = 0;
 
@@ -55,23 +59,31 @@ public class LoginManager : MonoBehaviour
 
     public void Logar()
     {
+        textoBotao.text = "";
+        loading.SetActive(true);
+
         string usuario = usuarioField.text;
         string senha = senhaField.text;
 
         if(usuario == Login && senha == Senha)
         {
-            feedback.text = "Login realizado\nCarregando...";
+            feedback.text = "Login realizado";
             StartCoroutine(CarregaScene());
         }
         else
         {
             feedback.text = "Usuário ou Senha inválido";
+            loading.SetActive(false);
+            textoBotao.text = "Entrar";
         }
+
     }
 
     IEnumerator CarregaScene()
     {
         yield return new WaitForSeconds(3);
         Application.LoadLevel("Patio");
+        loading.SetActive(false);
+        textoBotao.text = "Entrar";
     }
 }

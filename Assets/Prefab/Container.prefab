@@ -511,6 +511,7 @@ GameObject:
   - component: {fileID: 994487565198459755}
   - component: {fileID: 3968011764117556873}
   - component: {fileID: 711486549320752310}
+  - component: {fileID: -7767455476849779008}
   m_Layer: 0
   m_Name: Container
   m_TagString: Untagged
@@ -650,6 +651,24 @@ MonoBehaviour:
   autoScaleFactor: 1
   handleCamera: {fileID: 0}
   target: {fileID: 2127403229647828996}
+--- !u!114 &-7767455476849779008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643212825723478718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1662385991560647849
 GameObject:
   m_ObjectHideFlags: 0
