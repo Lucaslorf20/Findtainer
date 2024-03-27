@@ -58,6 +58,9 @@ public class SaveLoadContainer : MonoBehaviour
 
                 Vector3 containerPosition = new Vector3(containerData.position[0], containerData.position[1], containerData.position[2]);
                 Container container = Instantiate(containerPrefab, containerPosition, Quaternion.identity);
+                container.CdTipoContainer = containerData.CdTipoContainer;
+                container.NrContainer = containerData.NrContainer;
+                container.NrLacre = containerData.NrLacre;
                 Debug.Log("Instanciou.");
             }
 
