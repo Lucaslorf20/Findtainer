@@ -11,7 +11,7 @@ public class Container : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -19,4 +19,11 @@ public class Container : MonoBehaviour
     {
         
     }
+
+    private void Awake()
+    {
+        SaveLoadContainer.containers.Add(this);
+        Debug.Log("adicionou");
+    }
+
 }
