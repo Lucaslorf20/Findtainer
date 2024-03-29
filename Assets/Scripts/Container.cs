@@ -17,13 +17,14 @@ public class Container : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    private void Awake()
+    private void OnApplicationQuit()
     {
         SaveLoadContainer.containers.Add(this);
         Debug.Log("adicionou");
+        SaveLoadContainer.SaveContainer();
     }
 
 }

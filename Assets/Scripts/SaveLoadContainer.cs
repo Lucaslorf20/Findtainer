@@ -16,7 +16,7 @@ public class SaveLoadContainer : MonoBehaviour
         LoadContainer();
     }
 
-    public void SaveContainer()
+    public static void SaveContainer()
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + filename;
