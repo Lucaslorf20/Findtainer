@@ -8,8 +8,8 @@ public class SaveLoadContainer : MonoBehaviour
 {
     public static List<Container> containers = new List<Container>();
     [SerializeField] public Container containerPrefab;
-    public const string filename = "/container";
-    public const string filenameCount = "/container_count";
+    public const string filename = "/container2";
+    public const string filenameCount = "/container2_count";
 
     public void Awake()
     {
@@ -57,10 +57,23 @@ public class SaveLoadContainer : MonoBehaviour
                 stream.Close();
 
                 Vector3 containerPosition = new Vector3(containerData.position[0], containerData.position[1], containerData.position[2]);
-                Container container = Instantiate(containerPrefab, containerPosition, Quaternion.identity);
+                Vector3 containerRotation = new Vector3(containerData.rotation[0], containerData.rotation[1], containerData.rotation[2]);
+                Container container = Instantiate(containerPrefab, containerPosition, Quaternion.Euler(containerRotation));
                 container.CdTipoContainer = containerData.CdTipoContainer;
                 container.NrContainer = containerData.NrContainer;
                 container.NrLacre = containerData.NrLacre;
+                container.NmCliente = containerData.NmCliente;
+                container.NmArmador = containerData.NmArmador;
+                container.NrContrato = containerData.NrContrato;
+                container.QtTara = containerData.QtTara;
+                container.QtPesoBruto = containerData.QtPesoBruto;
+                container.QtPesoMaximo = containerData.QtPesoMaximo;
+                container.NrNotafiscal = containerData.NrNotafiscal;
+                container.NrReserva = containerData.NrReserva;
+                container.NrLacreSIF = containerData.NrLacreSIF;
+                container.NrLacreArmador = containerData.NrLacreArmador;
+                container.QtTemperatura = containerData.QtTemperatura;
+                container.DsMercadoria = containerData.DsMercadoria;
                 Debug.Log("Instanciou.");
             }
 

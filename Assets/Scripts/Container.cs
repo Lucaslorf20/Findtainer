@@ -20,6 +20,7 @@ public class Container : MonoBehaviour
     public string NrLacreArmador;
     public float QtTemperatura;
     public string DsMercadoria;
+    public System.DateTime inputDateTime;
 
 
     private GameObject NumeroContainerUI;
@@ -28,6 +29,7 @@ public class Container : MonoBehaviour
     void Start()
     {
         NumeroContainerUI = GameObject.FindWithTag("NrContainerUI");
+        //inputDateTime = System.DateTime.Now;
     }
 
     // Update is called once per frame
