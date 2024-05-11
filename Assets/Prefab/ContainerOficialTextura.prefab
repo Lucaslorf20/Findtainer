@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 7679205594809044677}
   - component: {fileID: 7037520189286058794}
   - component: {fileID: 1295581763610899473}
+  - component: {fileID: 37355722015723909}
   m_Layer: 0
   m_Name: ContainerOficialTextura
   m_TagString: Untagged
@@ -302,10 +303,34 @@ MonoBehaviour:
   m_colliders: []
   Selected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2961254858893677114}
+        m_TargetAssemblyTypeName: Container, Assembly-CSharp
+        m_MethodName: ExibirContainer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   Unselected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2961254858893677114}
+        m_TargetAssemblyTypeName: Container, Assembly-CSharp
+        m_MethodName: OcultarContainer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   BoundsObject: {fileID: 0}
   BoundsType: 0
   CustomBounds:
@@ -352,6 +377,19 @@ MonoBehaviour:
   PivotModeValue: 0
   PivotRotation: 0
   PivotRotationValue: 0
+--- !u!114 &37355722015723909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812258574754124123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fba187d6b18d16488484678327a6ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxY: 15
 --- !u!1 &4638783036672292186
 GameObject:
   m_ObjectHideFlags: 0
