@@ -47,7 +47,7 @@ public class Container : MonoBehaviour
 
     public void ExibirContainer()
     {
-        NumeroContainerUI.SetActive(true);
+        NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(true);
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = NrContainer;
     }
@@ -56,6 +56,6 @@ public class Container : MonoBehaviour
     {
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = "";
-        NumeroContainerUI.SetActive(false);
+        NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(false);
     }
 }

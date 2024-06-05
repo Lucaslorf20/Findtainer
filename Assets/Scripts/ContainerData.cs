@@ -31,9 +31,9 @@ public class ContainerData
         position[1] = container.transform.position.y;
         position[2] = container.transform.position.z;
 
-        rotation[0] = container.transform.rotation.x;
-        rotation[1] = container.transform.rotation.y;
-        rotation[2] = container.transform.rotation.z;
+        rotation[0] = container.transform.localEulerAngles.x;
+        rotation[1] = container.transform.localEulerAngles.y;
+        rotation[2] = container.transform.localEulerAngles.z;
 
         NrContainer = container.NrContainer;
         NrLacre = container.NrLacre;

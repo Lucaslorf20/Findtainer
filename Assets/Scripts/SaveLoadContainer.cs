@@ -8,8 +8,8 @@ public class SaveLoadContainer : MonoBehaviour
 {
     public static List<Container> containers = new List<Container>();
     [SerializeField] public Container containerPrefab;
-    public const string filename = "/container2";
-    public const string filenameCount = "/container2_count";
+    public const string filename = "/container";
+    public const string filenameCount = "/container_count";
 
     public void Awake()
     {
@@ -80,7 +80,7 @@ public class SaveLoadContainer : MonoBehaviour
         }
         else
         {
-            Debug.Log("Nenhum contêiner registrado.");
+            Debug.Log("Nenhum contï¿½iner registrado.");
         }
     }
 }
