@@ -149,6 +149,12 @@ private TMP_InputField[] inputFields;
             return false;
         }
 
+        if (ContainerExiste())
+        {
+            textoErro.text = "Já existe um container com o mesmo número.";
+            return false;
+        }
+
         float QtTaraAux = tara.text == "" ? 0 : float.Parse(tara.text);
         if(QtTaraAux < 0)
         {
@@ -376,6 +382,19 @@ private TMP_InputField[] inputFields;
             // Exibe a resposta da API protegida
             Debug.Log("Resposta da API protegida: " + apiRequest.downloadHandler.text);
         }
+    }
+
+    bool ContainerExiste()
+    {
+        Container[] containers = FindObjectsOfType<Container>();
+
+        foreach (Container container in containers)
+        {
+            if (numeroContainer.text == container.NrContainer)
+                return true;
+        }
+
+        return false;
     }
 }
 

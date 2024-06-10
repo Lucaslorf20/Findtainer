@@ -20,6 +20,7 @@ public class Container : MonoBehaviour
     public string NrLacreArmador;
     public float QtTemperatura;
     public string DsMercadoria;
+    public bool containerExcluded = false;
     public System.DateTime inputDateTime;
 
 
@@ -29,7 +30,6 @@ public class Container : MonoBehaviour
     void Start()
     {
         NumeroContainerUI = GameObject.FindWithTag("NrContainerUI");
-        //inputDateTime = System.DateTime.Now;
     }
 
     // Update is called once per frame
@@ -42,7 +42,16 @@ public class Container : MonoBehaviour
     {
         SaveLoadContainer.containers.Add(this);
         Debug.Log("adicionou");
-        SaveLoadContainer.SaveContainer();
+        SaveLoadContainer.SaveContainer(NrContainer);
+    }
+
+    private void OnDestroy()
+    {
+        if (containerExcluded)
+        {
+            SaveLoadContainer.containers.Remove(this);
+            SaveLoadContainer.RemoveContainer(NrContainer);
+        }
     }
 
     public void ExibirContainer()
@@ -50,6 +59,8 @@ public class Container : MonoBehaviour
         NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(true);
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = NrContainer;
+
+        SaidaContainer.selectedContainer.Add(gameObject);
     }
 
     public void OcultarContainer()
@@ -57,5 +68,7 @@ public class Container : MonoBehaviour
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = "";
         NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(false);
+
+        SaidaContainer.selectedContainer.Remove(gameObject);
     }
 }

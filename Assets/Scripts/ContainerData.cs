@@ -23,7 +23,6 @@ public class ContainerData
     public string NrLacreArmador;
     public float QtTemperatura;
     public string DsMercadoria;
-    public DateTime inputDateTime;
 
     public ContainerData(Container container)
     {
@@ -50,6 +49,5 @@ public class ContainerData
         NrLacreArmador = container.NrLacreArmador;
         QtTemperatura = container.QtTemperatura;
         DsMercadoria = container.DsMercadoria;
-        //inputDateTime = container.inputDateTime;
     }
 }

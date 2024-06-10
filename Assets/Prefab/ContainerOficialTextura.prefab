@@ -250,6 +250,18 @@ MonoBehaviour:
   NrContainer: 
   NrLacre: 
   CdTipoContainer: 0
+  NmCliente: 
+  NmArmador: 
+  NrContrato: 
+  QtTara: 0
+  QtPesoBruto: 0
+  QtPesoMaximo: 0
+  NrNotafiscal: 
+  NrReserva: 
+  NrLacreSIF: 
+  NrLacreArmador: 
+  QtTemperatura: 0
+  DsMercadoria: 
 --- !u!222 &6928065545294448168
 CanvasRenderer:
   m_ObjectHideFlags: 0

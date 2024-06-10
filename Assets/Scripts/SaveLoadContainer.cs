@@ -8,27 +8,25 @@ public class SaveLoadContainer : MonoBehaviour
 {
     public static List<Container> containers = new List<Container>();
     [SerializeField] public Container containerPrefab;
-    public const string filename = "/container";
-    public const string filenameCount = "/container_count";
 
     public void Awake()
-    {
-        LoadContainer();
+    {   
+        LoadContainers();
     }
 
-    public static void SaveContainer()
+    public static void SaveContainer(string NrContainer)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + filename;
-        string countPath = Application.persistentDataPath + filenameCount;
+        string usuario = PlayerPrefs.GetString("user");
+        string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+        string containerFilePath = absPath + "/container_";
 
-        FileStream countStream = new FileStream(countPath, FileMode.Create);
-        formatter.Serialize(countStream, containers.Count);
-        countStream.Close();
+        Directory.CreateDirectory(absPath);
+
+        BinaryFormatter formatter = new BinaryFormatter();
 
         for (int i = 0; i < containers.Count; i++)
         {
-            FileStream stream = new FileStream(path + i, FileMode.Create);
+            FileStream stream = new FileStream(containerFilePath + $"{containers[i].NrContainer}.bin", FileMode.Create);
             ContainerData containerData = new ContainerData(containers[i]);
 
             formatter.Serialize(stream, containerData);
@@ -37,50 +35,87 @@ public class SaveLoadContainer : MonoBehaviour
         }
     }
 
-    public void LoadContainer()
+    public static List<ContainerData> ReadContainers()
     {
-        string countPath = Application.persistentDataPath + filenameCount;
+        List<ContainerData> containerDataList = new List<ContainerData>();
+        string usuario = PlayerPrefs.GetString("user");
+        string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+        Directory.CreateDirectory(absPath);
 
-        if (File.Exists(countPath))
+        string[] containerFilePathList = Directory.GetFiles(absPath);
+
+        if (containerFilePathList.Length > 0)
         {
+            Debug.Log("Num conteiner: " + containerFilePathList.Length);
             BinaryFormatter formatter = new BinaryFormatter();
-            string path = Application.persistentDataPath + filename;
-            FileStream countStream = new FileStream(countPath, FileMode.Open);
-            int containerCount = (int)formatter.Deserialize(countStream);
-            Debug.Log("Num conteiner: " + containerCount);
-            countStream.Close();
 
-            for (int i = 0; i < containerCount; i++)
+            foreach (string containerFilePath in containerFilePathList)
             {
-                FileStream stream = new FileStream(path + i, FileMode.Open);
-                ContainerData containerData = formatter.Deserialize(stream) as ContainerData;
-                stream.Close();
-
-                Vector3 containerPosition = new Vector3(containerData.position[0], containerData.position[1], containerData.position[2]);
-                Vector3 containerRotation = new Vector3(containerData.rotation[0], containerData.rotation[1], containerData.rotation[2]);
-                Container container = Instantiate(containerPrefab, containerPosition, Quaternion.Euler(containerRotation));
-                container.CdTipoContainer = containerData.CdTipoContainer;
-                container.NrContainer = containerData.NrContainer;
-                container.NrLacre = containerData.NrLacre;
-                container.NmCliente = containerData.NmCliente;
-                container.NmArmador = containerData.NmArmador;
-                container.NrContrato = containerData.NrContrato;
-                container.QtTara = containerData.QtTara;
-                container.QtPesoBruto = containerData.QtPesoBruto;
-                container.QtPesoMaximo = containerData.QtPesoMaximo;
-                container.NrNotafiscal = containerData.NrNotafiscal;
-                container.NrReserva = containerData.NrReserva;
-                container.NrLacreSIF = containerData.NrLacreSIF;
-                container.NrLacreArmador = containerData.NrLacreArmador;
-                container.QtTemperatura = containerData.QtTemperatura;
-                container.DsMercadoria = containerData.DsMercadoria;
-                Debug.Log("Instanciou.");
+                if (File.Exists(containerFilePath))
+                {
+                    FileStream stream = new FileStream(containerFilePath, FileMode.Open);
+                    ContainerData containerData = formatter.Deserialize(stream) as ContainerData;
+                    containerDataList.Add(containerData);
+                    stream.Close();
+                }
+                else
+                {
+                    Debug.Log($"{containerFilePath} não encontrado.");
+                }
             }
-
         }
         else
         {
-            Debug.Log("Nenhum cont�iner registrado.");
+            Debug.Log("Nenhum contêiner registrado.");
         }
+
+        return containerDataList;
+    }
+
+    public void LoadContainers()
+    {
+        List<ContainerData> containerDataList = ReadContainers();
+
+        foreach (ContainerData containerData in containerDataList)
+        {
+            Vector3 containerPosition = new Vector3(containerData.position[0], containerData.position[1], containerData.position[2]);
+            Vector3 containerRotation = new Vector3(containerData.rotation[0], containerData.rotation[1], containerData.rotation[2]);
+            Container container = Instantiate(containerPrefab, containerPosition, Quaternion.Euler(containerRotation));
+            container.CdTipoContainer = containerData.CdTipoContainer;
+            container.NrContainer = containerData.NrContainer;
+            container.NrLacre = containerData.NrLacre;
+            container.NmCliente = containerData.NmCliente;
+            container.NmArmador = containerData.NmArmador;
+            container.NrContrato = containerData.NrContrato;
+            container.QtTara = containerData.QtTara;
+            container.QtPesoBruto = containerData.QtPesoBruto;
+            container.QtPesoMaximo = containerData.QtPesoMaximo;
+            container.NrNotafiscal = containerData.NrNotafiscal;
+            container.NrReserva = containerData.NrReserva;
+            container.NrLacreSIF = containerData.NrLacreSIF;
+            container.NrLacreArmador = containerData.NrLacreArmador;
+            container.QtTemperatura = containerData.QtTemperatura;
+            container.DsMercadoria = containerData.DsMercadoria;
+            Debug.Log("Instanciou.");
+        }
+    }
+
+    public static void RemoveContainer(string NrContainer)
+    {
+        List<ContainerData> containerDataList = ReadContainers();
+
+        foreach(ContainerData containerData in containerDataList)
+        {
+            if (containerData.NrContainer == NrContainer)
+            {
+                string usuario = PlayerPrefs.GetString("user");
+                string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+                string absContainerFilePath = absPath + $"/container_{NrContainer}.bin";
+
+                File.Delete(absContainerFilePath);
+                Debug.Log("Dado do contêiner excluído: " + NrContainer);
+            }
+        }
+
     }
 }
