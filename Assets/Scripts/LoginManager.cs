@@ -266,8 +266,8 @@ public class LoginManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         Application.LoadLevel("Patio");
-        loading.SetActive(false);
-        textoBotao.text = "Entrar";
+        //loading.SetActive(false);
+        //textoBotao.text = "Entrar";
     }
 }
 

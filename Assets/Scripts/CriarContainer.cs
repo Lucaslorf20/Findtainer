@@ -10,6 +10,8 @@ public class CriarContainer : MonoBehaviour
     public GameObject container;
     public GameObject CadastroContainer;
     [SerializeField]
+    private GameObject EscContainer;
+    [SerializeField]
     public GameObject UIHandle;
     [SerializeField]
     private GameObject loading;
@@ -45,8 +47,13 @@ public class CriarContainer : MonoBehaviour
     private TMP_Text textoErro;
     [SerializeField]
     private TMPro.TMP_Dropdown tipoContainer;
-
-private TMP_InputField[] inputFields;
+    [SerializeField]
+    private GameObject escFeedback;
+    [SerializeField]
+    private GameObject escLoading;
+    [SerializeField]
+    private GameObject textoLogin;
+    private TMP_InputField[] inputFields;
 
     public void OnButtonClick()
     {
@@ -78,6 +85,16 @@ private TMP_InputField[] inputFields;
         if (Input.GetKeyDown(KeyCode.Escape) && CadastroContainer.active)
         {
             FecharTela();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !CadastroContainer.active && !EscContainer.active)
+        {
+            EscContainer.SetActive(true);
+            UIHandle.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && EscContainer.active)
+        {
+            VoltarPatio();
         }
 
         if (Input.GetKeyDown(KeyCode.Tab) && CadastroContainer.active)
@@ -113,7 +130,34 @@ private TMP_InputField[] inputFields;
         inputField.ActivateInputField();
     }
 
-     public void CreateContainer()
+    public void VoltarPatio()
+    {
+        EscContainer.SetActive(false);
+        UIHandle.SetActive(true);
+    }
+
+    public void VoltarLogin()
+    {
+        LimparCampos();
+        textoLogin.SetActive(false);
+        escLoading.SetActive(true);
+        escFeedback.SetActive(true);
+        StartCoroutine(CarregaScene());
+    }
+
+    IEnumerator CarregaScene()
+    {
+        Debug.Log("Voltando ao login...");
+        yield return new WaitForSeconds(1.5f);
+        Application.LoadLevel("Login");
+    }
+
+    public void FecharApp()
+    {
+        Application.Quit();
+    }
+
+    public void CreateContainer()
      {
         textoBotao.text = "";
         loading.SetActive(true);
