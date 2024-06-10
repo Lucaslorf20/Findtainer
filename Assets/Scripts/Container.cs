@@ -42,7 +42,7 @@ public class Container : MonoBehaviour
     {
         SaveLoadContainer.containers.Add(this);
         Debug.Log("adicionou");
-        SaveLoadContainer.SaveContainer(NrContainer);
+        SaveLoadContainer.SaveContainer();
     }
 
     private void OnDestroy()

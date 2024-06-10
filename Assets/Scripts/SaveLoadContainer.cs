@@ -14,10 +14,9 @@ public class SaveLoadContainer : MonoBehaviour
         LoadContainers();
     }
 
-    public static void SaveContainer(string NrContainer)
+    public static void SaveContainer()
     {
-        string usuario = PlayerPrefs.GetString("user");
-        string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+        string absPath = Application.persistentDataPath + "/containers";
         string containerFilePath = absPath + "/container_";
 
         Directory.CreateDirectory(absPath);
@@ -38,8 +37,7 @@ public class SaveLoadContainer : MonoBehaviour
     public static List<ContainerData> ReadContainers()
     {
         List<ContainerData> containerDataList = new List<ContainerData>();
-        string usuario = PlayerPrefs.GetString("user");
-        string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+        string absPath = Application.persistentDataPath + "/containers";
         Directory.CreateDirectory(absPath);
 
         string[] containerFilePathList = Directory.GetFiles(absPath);
@@ -108,8 +106,7 @@ public class SaveLoadContainer : MonoBehaviour
         {
             if (containerData.NrContainer == NrContainer)
             {
-                string usuario = PlayerPrefs.GetString("user");
-                string absPath = Application.persistentDataPath + $"/{usuario}/containers";
+                string absPath = Application.persistentDataPath + "/containers";
                 string absContainerFilePath = absPath + $"/container_{NrContainer}.bin";
 
                 File.Delete(absContainerFilePath);

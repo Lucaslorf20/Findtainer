@@ -37,6 +37,8 @@ public class LoginManager : MonoBehaviour
     private TMP_InputField cadSenhaField;
     [SerializeField]
     private TMP_InputField cadSenhaConfirmField;
+    [SerializeField]
+    private TMP_Text cadFeedback;
 
     private int InputSelected = 0;
 
@@ -49,9 +51,12 @@ public class LoginManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && telaLogin.activeSelf)
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            Logar();
+            if (telaLogin.activeSelf)
+                Logar();
+            else
+                Cadastrar();
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -117,7 +122,6 @@ public class LoginManager : MonoBehaviour
         if(usuario == Login && senha == Senha)
         {
             feedback.text = "Login realizado";
-            PlayerPrefs.SetString("user", usuario);
             StartCoroutine(CarregaScene());
         }
         else if (File.Exists(path))
@@ -130,7 +134,6 @@ public class LoginManager : MonoBehaviour
             if (senha == userData.Password)
             {
                 feedback.text = "Login realizado";
-                PlayerPrefs.SetString("user", usuario);
                 StartCoroutine(CarregaScene());
             }
             else
@@ -157,15 +160,15 @@ public class LoginManager : MonoBehaviour
 
         if (!validEmail(email))
         {
-            feedback.text = "Digite um email válido.";
+            cadFeedback.text = "Digite um email válido.";
         }
         else if (senha != senhaConfirm)
         {
-            feedback.text = "As senhas não coincidem.";
+            cadFeedback.text = "As senhas não coincidem.";
         }
         else if(!strongPassword(senha))
         {
-            feedback.text = "Digite uma senha com pelo menos 8 caracteres, pelo menos 1 letra maiúscula, pelo menos 1 letra minúscula e pelo menos um caractere especial.";
+            cadFeedback.text = "Digite uma senha com pelo menos 8 caracteres, pelo menos 1 letra maiúscula, pelo menos 1 letra minúscula e pelo menos um caractere especial.";
         }
         else
         {
@@ -175,7 +178,7 @@ public class LoginManager : MonoBehaviour
 
             if (File.Exists(path))
             {
-                feedback.text = "Usuário já cadastrado.";
+                cadFeedback.text = "Usuário já cadastrado.";
             }
             else
             {
@@ -186,7 +189,7 @@ public class LoginManager : MonoBehaviour
                 formatter.Serialize(stream, userData);
                 Debug.Log("Usuário cadastrado com sucesso.");
                 stream.Close();
-                feedback.text = "Usuário cadastrado com sucesso.";
+                cadFeedback.text = "Usuário cadastrado com sucesso.";
 
                 emailField.text = "";
                 cadSenhaField.text = "";
@@ -210,6 +213,7 @@ public class LoginManager : MonoBehaviour
         {
             usuarioField.text = "";
             senhaField.text = "";
+            feedback.text = "";
             SelectInputField();
         }
         else
@@ -217,10 +221,11 @@ public class LoginManager : MonoBehaviour
             emailField.text = "";
             cadSenhaField.text = "";
             cadSenhaConfirmField.text = "";
+            cadFeedback.text = "";
             CadSelectInputField();
         }
 
-        feedback.text = "";
+        
 
     }
 
