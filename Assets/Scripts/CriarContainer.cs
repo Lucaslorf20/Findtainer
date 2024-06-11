@@ -142,6 +142,14 @@ public class CriarContainer : MonoBehaviour
         textoLogin.SetActive(false);
         escLoading.SetActive(true);
         escFeedback.SetActive(true);
+
+        Container[] containers = FindObjectsOfType<Container>();
+
+        foreach (Container container in containers)
+        {
+            container.SavingContainer();
+        }
+
         StartCoroutine(CarregaScene());
     }
 

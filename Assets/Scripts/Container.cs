@@ -40,6 +40,11 @@ public class Container : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        SavingContainer();
+    }
+
+    public void SavingContainer()
+    {
         SaveLoadContainer.containers.Add(this);
         Debug.Log("adicionou");
         SaveLoadContainer.SaveContainer();

@@ -6,11 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SaveLoadContainer : MonoBehaviour
 {
-    public static List<Container> containers = new List<Container>();
+    public static List<Container> containers;
     [SerializeField] public Container containerPrefab;
 
-    public void Awake()
-    {   
+    private void Awake()
+    {
+        containers = new List<Container>();
         LoadContainers();
     }
 
