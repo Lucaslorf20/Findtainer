@@ -61,6 +61,9 @@ public class Container : MonoBehaviour
 
     public void ExibirContainer()
     {
+	Rigidbody rigidbody = GetComponent<Rigidbody>();
+	rigidbody.useGravity = false;	
+
         NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(true);
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = NrContainer;
@@ -70,6 +73,9 @@ public class Container : MonoBehaviour
 
     public void OcultarContainer()
     {
+	Rigidbody rigidbody = GetComponent<Rigidbody>();
+	rigidbody.useGravity = true;
+
         TMP_Text textMesh = NumeroContainerUI.GetComponentInChildren<TMP_Text>();
         textMesh.text = "";
         NumeroContainerUI.transform.GetChild(0).gameObject.SetActive(false);
