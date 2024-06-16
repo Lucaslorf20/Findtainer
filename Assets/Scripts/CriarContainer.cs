@@ -9,6 +9,7 @@ public class CriarContainer : MonoBehaviour
 {
     public GameObject container;
     public GameObject CadastroContainer;
+    public static bool recadastro;
     [SerializeField]
     private GameObject EscContainer;
     [SerializeField]
@@ -53,7 +54,10 @@ public class CriarContainer : MonoBehaviour
     private GameObject escLoading;
     [SerializeField]
     private GameObject textoLogin;
+    [SerializeField]
+    private GameObject search;
     private TMP_InputField[] inputFields;
+    public static GameObject selectedContainer;
 
     public void OnButtonClick()
     {
@@ -64,6 +68,8 @@ public class CriarContainer : MonoBehaviour
 
     public void Start()
     {
+        selectedContainer = null;
+        recadastro = false;
         inputFields = new TMP_InputField[]
         {
             cliente, armador, contrato, numeroContainer, tara, pesobruto, pesomaximo,
@@ -74,12 +80,9 @@ public class CriarContainer : MonoBehaviour
 
      public void Update () 
     {
-        if (Input.GetKeyDown(KeyCode.C) && !CadastroContainer.active)
+        if (Input.GetKeyDown(KeyCode.C) && !CadastroContainer.active && !search.active && !EscContainer.active)
         {
-            //OnButtonClick();
-            CadastroContainer.SetActive(true);
-            UIHandle.SetActive(false);
-            LimparCampos();
+            CriandoContainer();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && CadastroContainer.active)
@@ -87,7 +90,12 @@ public class CriarContainer : MonoBehaviour
             FecharTela();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && !CadastroContainer.active && !EscContainer.active)
+        if (Input.GetKeyDown(KeyCode.S) && !CadastroContainer.active && !EscContainer.active && !search.active)
+        {
+            AbrirSearch();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !EscContainer.active)
         {
             EscContainer.SetActive(true);
             UIHandle.SetActive(false);
@@ -201,10 +209,30 @@ public class CriarContainer : MonoBehaviour
             return false;
         }
 
-        if (ContainerExiste())
+        if (recadastro)
         {
-            textoErro.text = "Já existe um container com o mesmo número.";
-            return false;
+            Container containerData = selectedContainer.GetComponent<Container>();
+
+            if (containerData.NrContainer != numeroContainer.text)
+            {
+                if (ContainerExiste())
+                {
+                    textoErro.text = "Já existe um container com o mesmo número.";
+                    return false;
+                }
+                else
+                {
+                    SaveLoadContainer.RemoveContainer(containerData.NrContainer);
+                }
+            }
+        }
+        else
+        {
+            if(ContainerExiste())
+            {
+                textoErro.text = "Já existe um container com o mesmo número.";
+                return false;
+            }
         }
 
         float QtTaraAux = tara.text == "" ? 0 : float.Parse(tara.text);
@@ -228,9 +256,33 @@ public class CriarContainer : MonoBehaviour
             return false;
         }
 
-            GameObject pc = (GameObject) Instantiate (container, transform.position, Quaternion.identity);
-            pc.transform.rotation = Quaternion.Euler(0,0,0);
-            pc.transform.position = new Vector3(0,0,0);
+        if (recadastro)
+        {
+            Container containerData = selectedContainer.GetComponent<Container>();
+
+            containerData.NrContainer = numeroContainer.text;
+            containerData.NrLacre = numeroLacre.text;
+            containerData.CdTipoContainer = tipoContainer.value; //tipoContainer.options[tipoContainer.value].text;
+            containerData.NmCliente = cliente.text;
+            containerData.NmArmador = armador.text;
+            containerData.NrContrato = contrato.text;
+            containerData.QtTara = QtTaraAux;
+            containerData.QtPesoBruto = pesobruto.text == "" ? 0 : float.Parse(pesobruto.text);
+            containerData.QtPesoMaximo = pesomaximo.text == "" ? 0 : float.Parse(pesomaximo.text);
+            containerData.NrNotafiscal = notafiscal.text;
+            containerData.NrReserva = reserva.text;
+            containerData.NrLacreSIF = numerolacresif.text;
+            containerData.NrLacreArmador = numeroLacre.text;
+            containerData.QtTemperatura = temperatura.text == "" ? 0 : float.Parse(temperatura.text);
+            containerData.DsMercadoria = mercadoria.text;
+            containerData.HighlightContainer();
+            Debug.Log(tipoContainer.options[tipoContainer.value].text);
+        }
+        else
+        {
+            GameObject pc = (GameObject)Instantiate(container, transform.position, Quaternion.identity);
+            pc.transform.rotation = Quaternion.Euler(0, 0, 0);
+            pc.transform.position = new Vector3(0, 0, 0);
             Container ScriptContainer = pc.GetComponent<Container>();
             ScriptContainer.NrContainer = numeroContainer.text;
             ScriptContainer.NrLacre = numeroLacre.text;
@@ -247,7 +299,9 @@ public class CriarContainer : MonoBehaviour
             ScriptContainer.NrLacreArmador = numeroLacre.text;
             ScriptContainer.QtTemperatura = temperatura.text == "" ? 0 : float.Parse(temperatura.text);
             ScriptContainer.DsMercadoria = mercadoria.text;
+            ScriptContainer.HighlightContainer();
             Debug.Log(tipoContainer.options[tipoContainer.value].text);
+        }
 
             return true;
      }
@@ -436,6 +490,65 @@ public class CriarContainer : MonoBehaviour
         }
     }
 
+    public void ClickSaidaContainer()
+    {
+        /*Debug.Log("Qtd de contêiner selecionado:  " + selectedContainer.Count);
+        for (int i = 0; i < selectedContainer.Count; i++)
+        {
+            selectedContainer[i].GetComponent<Container>().containerExcluded = true;
+            Destroy(selectedContainer[i]);
+        }*/
+
+        if (selectedContainer != null)
+        {
+            selectedContainer.GetComponent<Container>().containerExcluded = true;
+            Destroy(selectedContainer);
+            selectedContainer = null;
+        } 
+
+    }
+
+    public void CriandoContainer()
+    {
+        //OnButtonClick();
+        CadastroContainer.SetActive(true);
+        UIHandle.SetActive(false);
+
+        LimparCampos();
+
+        if (recadastro)
+        {
+            Container containerData = selectedContainer.GetComponent<Container>();
+
+            cliente.text = containerData.NmCliente;
+            armador.text = containerData.NmArmador;
+            contrato.text = containerData.NrContrato;
+            numeroContainer.text = containerData.NrContainer;
+            if (containerData.QtTara == 0f)
+                tara.text = "";
+            else
+                tara.text = containerData.QtTara.ToString();
+            if (containerData.QtPesoBruto == 0f)
+                pesobruto.text = "";
+            else
+                pesobruto.text = containerData.QtPesoBruto.ToString();
+            if (containerData.QtPesoMaximo == 0f)
+                pesomaximo.text = "";
+            else
+                pesomaximo.text = containerData.QtPesoMaximo.ToString();
+            notafiscal.text = containerData.NrNotafiscal;
+            reserva.text = containerData.NrReserva;
+            numeroLacre.text = containerData.NrLacre;
+            numerolacresif.text = containerData.NrLacreSIF;
+            if (containerData.QtTemperatura == 0f)
+                temperatura.text = "";
+            else
+                temperatura.text = containerData.QtTemperatura.ToString();
+            mercadoria.text = containerData.DsMercadoria;
+            tipoContainer.value = containerData.CdTipoContainer;
+        }
+    }
+
     bool ContainerExiste()
     {
         Container[] containers = FindObjectsOfType<Container>();
@@ -447,6 +560,18 @@ public class CriarContainer : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void AbrirSearch()
+    {
+        search.SetActive(true);
+        UIHandle.SetActive(false);
+    }
+
+    public void FecharSearch()
+    {
+        search.SetActive(false);
+        UIHandle.SetActive(true);
     }
 }
 
